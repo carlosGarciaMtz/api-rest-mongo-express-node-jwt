@@ -1,4 +1,6 @@
 import { User } from "../models/User.js";
+import jwt from "jsonwebtoken"
+import { generateToken } from "../utils/Token-Manager.js";
 
 export const register = async (req, res) => {
   try {
@@ -38,9 +40,14 @@ export const login = async (req, res) => {
     if (!isMatch) throw { code: 10000 };
 
     //TODO crear token
+
+    const {token, expiresIn} = generateToken(user.id);
+
     return res.status(200).json({
       status: "success",
       msg: "Usuario logueado",
+      token,
+      expiresIn
     });
   } catch (error) {
     if (error.code === 10000) return res.status(403).json({
