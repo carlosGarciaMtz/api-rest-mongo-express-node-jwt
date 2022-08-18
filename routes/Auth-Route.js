@@ -5,12 +5,16 @@ import { validationResultExpress } from "../middlewares/Validation-Result.js";
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-    res.json({ok:true});
+router.get("/healtcheck", (req, res) => {
+    res.json({
+      status: 'success',
+      message: 'Server is running',
+      version: '1.0.0'
+    });
 });
 
 router.post(
-  "/login",
+  "/auth/login",
   [
     body("email", 'Formato de email incorrecto')
       .trim()
@@ -24,7 +28,7 @@ router.post(
   login);
 
 router.post(
-  "/register",
+  "/auth/register",
   [
     body("email", 'Formato de email incorrecto')
       .trim()
