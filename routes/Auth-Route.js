@@ -1,6 +1,7 @@
 import express from "express";
 import {body} from 'express-validator';
-import { login, register } from "../controllers/Auth-Controller.js";
+import { login, register, infoUser, refreshToken, logout } from "../controllers/Auth-Controller.js";
+import { requireToken } from "../middlewares/Require-Auth.js";
 import { validationResultExpress } from "../middlewares/Validation-Result.js";
 
 const router = express.Router();
@@ -14,7 +15,7 @@ router.get("/healtcheck", (req, res) => {
 });
 
 router.post(
-  "/auth/login",
+  "/login",
   [
     body("email", 'Formato de email incorrecto')
       .trim()
@@ -28,7 +29,7 @@ router.post(
   login);
 
 router.post(
-  "/auth/register",
+  "/register",
   [
     body("email", 'Formato de email incorrecto')
       .trim()
@@ -46,5 +47,9 @@ router.post(
   ],
   validationResultExpress,
   register);
+
+  router.get("/getUser", requireToken, infoUser);
+  router.get("/refresh", refreshToken);
+  router.get("/logout", logout);
 
 export default router;
