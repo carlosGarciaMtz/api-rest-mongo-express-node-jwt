@@ -31,5 +31,5 @@ app.use('/', redirectRoutes);
 
 const PORT = process.env.PORT || 8898;
 app.listen(PORT, () => {
-    console.log("Server is running on port 8898");
+    console.log("Server is running on port PORT");
 });
