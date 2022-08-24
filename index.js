@@ -20,7 +20,8 @@ app.use(cors({
             return callback(null, origin);
 
         return callback("error de CORS: " + origin + " no autorizado");
-    }
+    },
+    credentials: true
 }))
 app.use(express.json());
 app.use(cookieParser());
