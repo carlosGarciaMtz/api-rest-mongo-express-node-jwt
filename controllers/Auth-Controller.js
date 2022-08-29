@@ -1,6 +1,5 @@
 import { User } from "../models/User.js";
 import { generateRefreshToken, generateToken } from "../utils/Token-Manager.js";
-import jwt from "jsonwebtoken"
 
 export const register = async (req, res) => {
   try {
@@ -11,13 +10,15 @@ export const register = async (req, res) => {
     user = new User({ email, password });
     await user.save();
 
-    //TODO crear token
     const {token, expiresIn} = generateToken(user.id);
     generateRefreshToken(user.id, res);
 
     return res.status(201).json({
       status: "success",
-      msg: "Usuario creado",
+      msg: {
+        token, 
+        expiresIn
+      },
     });
   } catch (error) {
     if (error.code === 11000)
@@ -49,9 +50,10 @@ export const login = async (req, res) => {
 
     return res.status(200).json({
       status: "success",
-      msg: "Usuario logueado",
-      token,
-      expiresIn
+      msg:{
+        token,
+        expiresIn
+      }
     });
   } catch (error) {
     if (error.code === 10000) return res.status(403).json({

@@ -5,6 +5,8 @@ export const getLinks = async (req, res) => {
   try {
     const links = await Link.find({ uid:req.uid })
 
+    if(links.length === 0) throw {code:402}
+
     res.status(201).json({
       status: "success",
       msg: {
@@ -12,7 +14,12 @@ export const getLinks = async (req, res) => {
       },
     })
   } catch (error) {
-    res.status(500).json({
+    if (error.code === 402) return res.status(403).json({
+      status: "error",
+      msg: "Sin links"
+    })
+
+    return res.status(500).json({
       status: "error",
       msg: "Error del servidor: " + error,
     })
